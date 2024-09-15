@@ -86,7 +86,7 @@ bagbazaar/
 - Implementation of a product review and rating system.
 - Development of an advanced analytics dashboard for sellers.
 
-##Learning
+## Learning
 
 To effectively contribute to or understand the BagBazaar project, it is beneficial to have a basic understanding of the following:
 - Basic Understanding of Node.js or JavaScript: Familiarity with Node.js and JavaScript fundamentals will help you understand the server-side logic and client-side interactions of the application.

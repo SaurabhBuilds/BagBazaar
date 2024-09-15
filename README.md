@@ -95,4 +95,4 @@ To effectively contribute to or understand the BagBazaar project, it is benefici
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License](LICENSE).

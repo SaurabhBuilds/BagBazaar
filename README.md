@@ -51,7 +51,7 @@ To get started with BagBazaar, follow these steps:
    Launch the application using:
 
    ```bash
-   npm start
+   node app.js 
    ```
 
    The application will be accessible at `http://localhost:3000`.
@@ -64,8 +64,7 @@ To get started with BagBazaar, follow these steps:
   - Add items to your cart and proceed to checkout.
 
 - **For Sellers**:
-  - Log in to manage your products.
-  - Add new products, update existing ones, or remove them as needed.
+  - /owners/admin go to this route to add new products.
 
 ## Folder Structure
 
@@ -78,7 +77,7 @@ bagbazaar/
 ├── views/             # EJS templates for rendering frontend pages
 ├── public/            # Static assets (CSS, JavaScript files, images)
 ├── config/            # Configuration files (e.g., Database connection settings)
-└── server.js          # Main server entry point
+└── app.js             # Main server entry point
 ```
 
 ## Future Enhancements

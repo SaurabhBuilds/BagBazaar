@@ -29,6 +29,7 @@ router.get("/addtocart/:id",isLoggedIn,async (req,res)=>{
     let {email} = req.user
     let {id} = req.params
     let user = await userModel.findOne({email})//populate dusre route me karo yaha nhii
+    console.log(user)
     user.cart.push(id);
     await user.save();
     res.redirect("/cart")
@@ -37,17 +38,32 @@ router.get("/addtocart/:id",isLoggedIn,async (req,res)=>{
 router.get("/cart",isLoggedIn,async(req,res)=>{
     let {email} = req.user
     let user = await userModel.findOne({email}).populate('cart')
+    console.log(user)
     res.render("cart",{user})
 })
 
-router.delete("/delete/:_id",isLoggedIn,async (req,res)=>{
-    let {_id} = req.params;
-    let {email} = req.user
-    let user = await userModel.findOne({email})
-    user.cart.forEach(element => {
-        
-    });
-})
-
-
+router.get("/delete/:_id", isLoggedIn, async (req, res) => {
+    try {
+      let { _id } = req.params;
+      let { email } = req.user;
+  
+      // Find the user by email and remove the product from their cart
+      let updatedUser = await userModel.findOneAndUpdate(
+        { email: email }, // Find the user by email
+        { $pull: { cart: _id } }, // Use $pull to remove the product from the cart array
+        { new: true } // Return the updated user document
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).send("User not found");
+      }
+  
+      // Successfully updated the cart
+      res.status(200).send("Product removed from cart");
+    } catch (err) {
+      console.error("Error removing product from cart:", err);
+      res.status(500).send("Failed to remove product from cart");
+    }
+  });
+  
 module.exports = router;

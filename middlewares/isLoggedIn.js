@@ -12,6 +12,7 @@ module.exports = async function(req,res,next) {
         let user = await userModel
             .findOne({email:decoded.email}).select("-password") // find a user by their email,but excluding the password
         req.user = user;
+        
         next();
     }
     catch{
@@ -19,3 +20,4 @@ module.exports = async function(req,res,next) {
         res.redirect("/");
     }
 }
+

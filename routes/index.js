@@ -3,42 +3,63 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 const router = express.Router();
 const productModel= require("../models/product-model");
 const userModel = require("../models/user-model");
+const mongoose  = require("mongoose");
 
 router.get("/", function(req,res){
+  
     let error = req.flash("error");
-    res.render("index", {error});
+    res.render("index", {error,loggedin: false});
 });
 
-router.get("/shop",isLoggedIn, async function(req,res){
+router.get("/shop", async function(req,res){
     let products = await productModel.find();
+    var flag = false
+    if(req.cookies.token){
+      flag = true
+  }
 
-    res.render("shop",{products})
+    res.render("shop",{products ,loggedin:flag})
 })
 
-router.get("/show/:id",isLoggedIn,async(req,res)=>{
+router.get("/show/:id",async(req,res)=>{
     let {id} = req.params
     let product = await productModel.findOne({_id:id})
     res.render("showproduct",{product})
 })
 
-router.get("/profile",isLoggedIn,async(req,res)=>{
-    res.render("profile")
+router.get("/profile",async(req,res)=>{
+
+  var flag = false
+  if(req.cookies.token){
+    flag = true
+}
+    res.render("profile",{loggedin:flag})
 })
 
 router.get("/addtocart/:id",isLoggedIn,async (req,res)=>{
     let {email} = req.user
     let {id} = req.params
     let user = await userModel.findOne({email})//populate dusre route me karo yaha nhii
-    console.log(user)
-    user.cart.push(id);
+ 
+    let productId = new mongoose.Types.ObjectId(id)
+ 
+    const itemIndex = user.cart.findIndex(item => item.productId.equals(productId));
+
+        if (itemIndex > -1) {
+            // Product already in cart, update the quantity
+            user.cart[itemIndex].quantity += 1;
+        } else {
+            // Product not in cart, add a new item
+            user.cart.push({ productId, quantity:1 });
+        }
     await user.save();
     res.redirect("/cart")
 })
 
 router.get("/cart",isLoggedIn,async(req,res)=>{
     let {email} = req.user
-    let user = await userModel.findOne({email}).populate('cart')
-    console.log(user)
+    let user = await userModel.findOne({email}).populate('cart.productId')
+
     res.render("cart",{user})
 })
 
@@ -50,7 +71,7 @@ router.get("/delete/:_id", isLoggedIn, async (req, res) => {
       // Find the user by email and remove the product from their cart
       let updatedUser = await userModel.findOneAndUpdate(
         { email: email }, // Find the user by email
-        { $pull: { cart: _id } }, // Use $pull to remove the product from the cart array
+        { $pull: { cart:{ productId: _id } } }, // Use $pull to remove the product from the cart array
         { new: true } // Return the updated user document
       );
   

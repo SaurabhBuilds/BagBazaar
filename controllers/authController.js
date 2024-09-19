@@ -42,6 +42,7 @@ module.exports.loginUser = async function(req,res){
         if(result){
             let token = generateToken(user)
             res.cookie("token",token)
+            req.user = user
             return res.redirect("/shop")
         }
         req.flash("error","Invalid email or password!!"); //it takes 2 inputs ,1st msg name 2nd msg itself
@@ -50,6 +51,7 @@ module.exports.loginUser = async function(req,res){
 }
 
 module.exports.logoutUser = async function(req,res){
+    req.user = undefined
     res.cookie("token","");
     res.redirect("/");
 }

@@ -19,7 +19,7 @@ router.post("/create",upload.single("image"),async function(req,res){
     req.flash("success","product created successfully")
     
     res.redirect("/owners/admin");
-    } catch{
+    } catch(err){
         res.send(err.message);
     }
 });

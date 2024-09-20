@@ -1,30 +1,54 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const userModel = require('../models/user-model'); // Adjust the path if necessary
 
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback"
-},
-async (accessToken, refreshToken, profile, done) => {
-  // Find or create the user in your database
-  const email = profile.emails[0].value;
+// Configure Passport to use Google OAuth
+passport.use(
+    new GoogleStrategy({
+        clientID: '468170276371-a10k25qtted2r8skmu0bul9mvjodojaq.apps.googleusercontent.com',
+        clientSecret: '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',
+        callbackURL: '/auth/google/callback',
+        scope: ["profile", "email"],
+    },
+    async (accessToken, refreshToken, profile, done) => {
+        try {
+            // Check if user already exists in the db
+            const existingUser = await userModel.findOne({ googleId: profile.id });
+            if (existingUser) {
+                // User already exists
+                
+                return done(null, existingUser); // Passing only the user object
+            }
 
-  // Check if the user exists in the database
-  let user = await User.findOne({ email });
-  if (!user) {
-    // If user doesn't exist, create a new one
-    user = new User({
-      fullname: profile.displayName,
-      email: email,
-      googleId: profile.id
-    });
-    await user.save();
-  }
-  
-  // Generate JWT token for the user
-  const token = generateJWT(user);
-  
-  // Call done with user details
-  done(null, user);
-}));
+            // If not, create a new user
+            const newUser = await userModel.create({
+                googleId: profile.id,
+                fullname: profile.displayName,
+                email: profile._json.email  // assuming email is returned
+            });
+
+            // const token = jwt.sign({ email: newUser.email, userid: newUser._id }, 'shhhhh');
+            return done(null, newUser); // Passing only the user object
+        } catch (err) {
+            done(err, null);
+        }
+    })
+);
+
+
+
+
+// Store user ID in session (serialize)
+passport.serializeUser((user, done) => {
+    done(null, user.id); // Storing only the user id in the session
+});
+
+// Retrieve user from session using ID (deserialize)
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await userModel.findById(id);
+        done(null, user); // Retrieve the full user object from the database
+    } catch (err) {
+        done(err, null);
+    }
+});

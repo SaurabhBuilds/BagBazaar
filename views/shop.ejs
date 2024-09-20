@@ -25,7 +25,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <% products.forEach(function(product){ %>
                     <a href="/show/<%= product._id %>" class="w-60 rounded-[5px] overflow-hidden shadow-md block">
-                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]" id="show">
                             <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
                         </div>
                         <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
@@ -33,15 +33,23 @@
                                 <h3><%= product.name %></h3>
                                 <h4>₹ <%= product.price %></h4>
                             </div>
-                            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/addtocart/<%=product._id%>">
+                            <span class="w-7 h-7 flex items-center justify-center rounded-full bg-white" 
+                                  onclick="event.stopPropagation(); window.location.href='/addtocart/<%= product._id %>'">
                                 <i class="ri-add-line"></i>
                             </span>
                         </div>
                     </a>
                     
+                    
                 <% }) %>
             </div>
         </div>
-        
     </div>
+    <!-- <script>
+        const show = document.querySelector("#show")
+        show.addEventListener("click",(eve)=>{
+            window.location.href = "/show/product._id"
+        })
+
+    </script> -->
     <%- include('./partials/footer') %>

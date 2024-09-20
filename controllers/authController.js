@@ -2,12 +2,20 @@ const userModel = require("../models/user-model");
 const jwt = require("jsonwebtoken");
 const {generateToken} = require("../utils/generateToken");
 const bcrypt = require('bcrypt')
+const {hashed} = require('../utils/hash')
 
 module.exports.registerUser = async function(req,res){
     try{
-    let {email, password, fullname} = req.body;
-    let user = await userModel.findOne({email});
-    if(user){
+    let {email, pass, fullname} = req.body;
+    let user = await userModel.findOne({email});//agr user hai or uska pass null hai to uska pass update karo 
+    if(user && user.password===undefined){
+        let password = await hashed(pass)
+        await userModel.updateOne({email:user.email},{$set:{password:password,fullname:fullname}})
+        req.flash("error","You can login!")
+        return res.redirect("/");
+
+    }else if(user){
+       
         req.flash("error","You Already have an account , please login !")
         return res.redirect("/");
     }

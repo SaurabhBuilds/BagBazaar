@@ -6,13 +6,14 @@ const ownerSchema = mongoose.Schema({
         minLength: 3,
         trim:true,
     },
+    googleId: String,
     email:String,
     password: String,
-
     products: {
         type :Array,
         default: []
     },
+
     picture:String,
     gstin:String,
 })

@@ -14,7 +14,7 @@
     <nav class="w-full flex justify-between px-5 py-3 items-center">
         <!-- Logo -->
         <h3 class="text-xl">
-            <img src="/images/BagBazar.png" alt="BagBazar Logo" class="h-12 w-auto">
+            <img src="/images/BagBazar.png" alt="BagBazar Logo" class="h-12 w-auto" id="logo">
         </h3>
 
         <!-- Links and Profile Button -->
@@ -69,7 +69,11 @@
         // Select the profile button and popup
         const profileBtn = document.getElementById('profileBtn');
         const profilePopup = document.getElementById('profilePopup');
+        const logo = document.querySelector("#logo")
 
+        logo.addEventListener("click",function(){
+            window.location.href = "http://localhost:3000/shop";
+        })
         // Toggle the popup when clicking the profile button
         profileBtn.addEventListener('click', (e) => {
             e.stopPropagation();

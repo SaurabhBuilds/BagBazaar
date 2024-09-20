@@ -3,7 +3,8 @@ const router = express.Router();
 const ownerModel = require("../models/owner-model")
 
 router.get("/", function(req,res){
-    res.send("hey it's working")
+    let error = 0
+    res.render("owner-login2",{error})
 });
 
 if(process.env.NODE_ENV === "development"){ //ye environment based routing hai ,means ye route jo hai wo production me nhi chalega sirf development me chalega
@@ -26,6 +27,11 @@ if(process.env.NODE_ENV === "development"){ //ye environment based routing hai ,
 router.get("/admin" , function (req,res){
     let success = req.flash("success")
     res.render("createproducts",{success})
+})
+
+router.get("/admin/products" , function (req,res){
+    // let success = req.flash("success")
+    res.render("admin")
 })
 
 module.exports = router;

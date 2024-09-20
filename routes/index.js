@@ -4,12 +4,26 @@ const router = express.Router();
 const productModel= require("../models/product-model");
 const userModel = require("../models/user-model");
 const mongoose  = require("mongoose");
+const passport = require("passport");
+const { generateToken } = require("../utils/generateToken");
 
 router.get("/", function(req,res){
   
     let error = req.flash("error");
     res.render("index", {error,loggedin: false});
 });
+
+router.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+
+router.get('/auth/google/callback', passport.authenticate('google'), (req, res) => {
+  // Successful authentication, send the token to the client.
+  let token = generateToken(req.user);
+  res.cookie('token', token); // Store token in cookie
+  res.redirect('/cart');
+});
+
 
 router.get("/shop", async function(req,res){
     let products = await productModel.find();

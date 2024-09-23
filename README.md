@@ -44,6 +44,10 @@ To get started with BagBazaar, follow these steps:
    ```bash
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
+   EXPRESS_SESSION_SECRET=your_session's_secret
+   CLIENT_ID=your_client_id_here
+   CLIENT_SECRET=your_client_secret_here
+   CALLBACK_URL=http://localhost:3000/auth/google/callback
    ```
 
 4. **Start the Application**:

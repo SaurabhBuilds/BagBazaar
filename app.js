@@ -10,8 +10,9 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const expressSession = require("express-session")
 
+require("dotenv").config();
 require('./controllers/google-oauth');
-require("dotenv").config(); //require kiya dotenv ko or turant call kardiya using config
+ //require kiya dotenv ko or turant call kardiya using config
 
 const db = require("./config/mongoose-connection");
 const userAdd  = require("./middlewares/userAdd");

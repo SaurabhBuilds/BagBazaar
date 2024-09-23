@@ -39,7 +39,10 @@
                             <img src="/images/profile-pic.jpg" class="w-12 h-12 mx-auto rounded-full" alt="Profile Picture">
             
                             <!-- Check if user object exists to avoid errors when logged out -->
-                            <% if (user) { %>
+                            <% if (user.isadmin==true) { %>
+                                <h3 class="mt-2 text-gray-900 font-semibold">Hello, Admin👋</h3>
+                                <p class="text-sm text-gray-500"><%= user.email %></p>
+                            <% } else if (user) { %>
                                 <h3 class="mt-2 text-gray-900 font-semibold">Hi, <%= user.fullname %>👋</h3>
                                 <p class="text-sm text-gray-500"><%= user.email %></p>
                             <% } else { %>

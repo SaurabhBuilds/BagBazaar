@@ -21,7 +21,10 @@ const userSchema = mongoose.Schema({
             default: 1
         }
     }],
-    isadmin:  Boolean,
+    isadmin: {
+        type: Boolean,
+        default: false
+    } ,
     orders: {
         type :Array,
         default: []

@@ -8,13 +8,12 @@ const passport = require("passport");
 const { generateToken } = require("../utils/generateToken");
 
 router.get("/", function(req,res){
-  
     let error = req.flash("error");
     res.render("index", {error,loggedin: false});
 });
 
 router.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile', 'email']
+    scope: ['profile', 'email']
 }));
 
 router.get('/auth/google/callback', passport.authenticate('google'), (req, res) => {
@@ -51,6 +50,7 @@ router.get("/profile",async(req,res)=>{
 })
 
 router.get("/addtocart/:id",isLoggedIn,async (req,res)=>{
+  try{
     let {email} = req.user
     let {id} = req.params
     let user = await userModel.findOne({email})//populate dusre route me karo yaha nhii
@@ -68,13 +68,22 @@ router.get("/addtocart/:id",isLoggedIn,async (req,res)=>{
         }
     await user.save();
     res.redirect("/cart")
+      }
+      catch(err){
+        console.log("this user cannot do add to cart: ",err)
+      }
 })
 
 router.get("/cart",isLoggedIn,async(req,res)=>{
+  try{
     let {email} = req.user
     let user = await userModel.findOne({email}).populate('cart.productId')
 
     res.render("cart",{user})
+  }
+  catch(err){
+    console.log("cart page is not able to load: ",err)
+  }
 })
 
 router.get("/delete/:_id", isLoggedIn, async (req, res) => {

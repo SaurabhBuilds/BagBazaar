@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const {generateToken} = require("../utils/generateToken");
 const bcrypt = require('bcrypt')
 const {hashed} = require('../utils/hash')
+const ownerModel = require("../models/owner-model")
 
 module.exports.registerUser = async function(req,res){
     try{
@@ -63,4 +64,5 @@ module.exports.logoutUser = async function(req,res){
     res.cookie("token","");
     res.redirect("/");
 }
+
 

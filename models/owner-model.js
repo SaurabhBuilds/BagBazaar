@@ -9,11 +9,14 @@ const ownerSchema = mongoose.Schema({
     googleId: String,
     email:String,
     password: String,
-    products: {
-        type :Array,
-        default: []
+    products: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'product'
+}],
+    isadmin: {
+        type: Boolean,
+        default: true
     },
-
     picture:String,
     gstin:String,
 })

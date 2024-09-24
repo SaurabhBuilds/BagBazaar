@@ -12,6 +12,7 @@
 
 <body class="font-['helvetica_now_display']">
     <nav class="w-full flex justify-between px-5 py-3 items-center">
+    <!-- <div class="fixed"> -->
         <!-- Logo -->
         <h3 class="text-xl">
             <img src="/images/BagBazar.png" alt="BagBazar Logo" class="h-12 w-auto" id="logo">
@@ -36,7 +37,7 @@
                     <div id="profilePopup" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
                         <div class="p-4 text-center">
                             <!-- Profile picture -->
-                            <img src="/images/profile-pic.jpg" class="w-12 h-12 mx-auto rounded-full" alt="Profile Picture">
+                            <img src="/images/Profile_avatar_placeholder_large.png" class="w-12 h-12 mx-auto rounded-full" alt="Profile Picture">
             
                             <!-- Check if user object exists to avoid errors when logged out -->
                             <% if (user.isadmin==true) { %>
@@ -63,7 +64,8 @@
                     </div>
                 </div>
             <% } %>
-            
+        </div>
+    <!-- </div>     -->
     </nav>
 
     <script>

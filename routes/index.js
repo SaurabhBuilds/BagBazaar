@@ -86,6 +86,18 @@ router.get("/cart",isLoggedIn,async(req,res)=>{
   }
 })
 
+router.get("/cart/checkout",isLoggedIn,async(req,res)=>{
+  try{
+    let {email} = req.user
+    let user = await userModel.findOne({email}).populate('cart.productId')
+
+    res.render("checkout",{user})
+  }
+  catch(err){
+    console.log("cart page is not able to load: ",err)
+  }
+})
+
 router.get("/delete/:_id", isLoggedIn, async (req, res) => {
     try {
       let { _id } = req.params;
